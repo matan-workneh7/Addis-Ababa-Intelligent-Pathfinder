@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from typing import List, Set, Optional
 
-from ..config.settings import VISUALIZATION_COLORS, DEFAULT_FIGSIZE, DEFAULT_DPI
+from config.settings import VISUALIZATION_COLORS, DEFAULT_FIGSIZE, DEFAULT_DPI
 
 
 class VisualizationService:
@@ -81,7 +81,7 @@ class VisualizationService:
     
     def _plot_explored_area(self, ax, visited_nodes: Set[int]) -> None:
         """Plot the explored area in light blue."""
-        from ..config.settings import EXPLORED_LINE_WIDTH, EXPLORED_ALPHA
+        from config.settings import EXPLORED_LINE_WIDTH, EXPLORED_ALPHA
         
         visited_nodes_list = list(visited_nodes)
         if visited_nodes_list:
@@ -99,7 +99,7 @@ class VisualizationService:
     
     def _plot_alternative_paths(self, ax, alternative_paths: List[List[int]]) -> List[str]:
         """Plot all alternative paths with distinct colors."""
-        from ..config.settings import ALTERNATIVE_LINE_WIDTH
+        from config.settings import ALTERNATIVE_LINE_WIDTH
         
         colors = VISUALIZATION_COLORS["alternatives"]
         legend_entries = []
@@ -114,7 +114,7 @@ class VisualizationService:
     
     def _plot_primary_path(self, ax, primary_path: List[int]) -> None:
         """Plot the primary path in red."""
-        from ..config.settings import PRIMARY_LINE_WIDTH
+        from config.settings import PRIMARY_LINE_WIDTH
         
         if primary_path and len(primary_path) > 1:
             self._draw_path(ax, primary_path, VISUALIZATION_COLORS["primary"], PRIMARY_LINE_WIDTH)
@@ -172,7 +172,7 @@ class VisualizationService:
     def _fallback_text_output(self, primary_path: List[int], 
                              alternative_paths: List[List[int]]) -> None:
         """Fallback text output when visualization fails."""
-        from ..utils.path_calculator import PathCalculator
+        from shared.calculators.path_calculator import PathCalculator
         
         print(f"Path details: {len(primary_path)-1 if primary_path else 0} steps")
         if primary_path:

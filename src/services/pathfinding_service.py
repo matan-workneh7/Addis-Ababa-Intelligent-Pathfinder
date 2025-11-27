@@ -6,7 +6,7 @@ Single responsibility: Path finding algorithms and constraint handling.
 from collections import deque
 from typing import List, Set, Tuple, Optional, Iterator
 
-from ..config.settings import CONSTRAINT_MESSAGES, DEFAULT_MAX_PATHS
+from config.settings import CONSTRAINT_MESSAGES, DEFAULT_MAX_PATHS
 
 
 class PathfindingService:

@@ -5,12 +5,12 @@ Single responsibility: Orchestrate path finding workflow and user interaction.
 
 from typing import List, Tuple, Optional
 
-from ..models.graph_model import GraphModel
-from ..models.location_model import LocationModel
-from ..services.pathfinding_service import PathfindingService
-from ..services.visualization_service import VisualizationService
-from ..utils.path_calculator import PathCalculator
-from ..config.settings import DEFAULT_MAX_PATHS, CONSTRAINT_MESSAGES
+from core.graph_model import GraphModel
+from core.location_model import LocationModel
+from services.pathfinding_service import PathfindingService
+from services.visualization_service import VisualizationService
+from shared.calculators.path_calculator import PathCalculator
+from config.settings import DEFAULT_MAX_PATHS, CONSTRAINT_MESSAGES
 
 
 class PathfindingController:
