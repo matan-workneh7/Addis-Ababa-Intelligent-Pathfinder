@@ -15,8 +15,8 @@ from shared.constraints.distance_constraint import DistanceConstraint
 from shared.constraints.same_location_constraint import SameLocationConstraint
 from shared.calculators.generic_path_calculator import GenericPathCalculator
 from algorithms.bfs import BFSAlgorithm
-from algorithms.dfs import DFSAlgorithm
-from algorithms.astar import AStarAlgorithm
+from algorithms.dfs_classic import ClassicDFSAlgorithm as DFSAlgorithm
+from algorithms.astar_improved import AStarAlgorithm
 from services.generic_pathfinding_service import GenericPathfindingService
 
 
@@ -47,7 +47,7 @@ class AddisAbabaAdapter:
         self.path_calculator = GenericPathCalculator()
         self.message_handler = AddisAbabaMessageHandler()
         
-        # Generic algorithms
+        # Initialize algorithms
         self.bfs_algorithm = BFSAlgorithm(self.message_handler)
         self.dfs_algorithm = DFSAlgorithm(self.message_handler)
         self.astar_algorithm = AStarAlgorithm(self._euclidean_heuristic, self.message_handler)

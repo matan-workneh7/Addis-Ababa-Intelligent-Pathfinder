@@ -17,9 +17,8 @@ from .core.location_model import LocationModel
 
 # Algorithms
 from .algorithms.bfs import BFSAlgorithm
-from .algorithms.dfs import DFSAlgorithm
-from .algorithms.astar import AStarAlgorithm
 from .algorithms.dfs_classic import ClassicDFSAlgorithm
+from .algorithms.astar_improved import AStarAlgorithm
 
 # Shared Components
 from .shared.constraints.node_limit_constraint import NodeLimitConstraint
@@ -52,7 +51,7 @@ __all__ = [
     "GraphModel", "LocationModel",
     
     # Algorithms
-    "BFSAlgorithm", "DFSAlgorithm", "AStarAlgorithm", "ClassicDFSAlgorithm",
+    "BFSAlgorithm", "ClassicDFSAlgorithm", "AStarAlgorithm",
     
     # Shared Components
     "NodeLimitConstraint", "DistanceConstraint", "SameLocationConstraint",
