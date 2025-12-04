@@ -1,4 +1,4 @@
-# Addis Ababa Path Finder
+# Addis Ababa Intelligent Path Finder
 
 ## Project Overview
 
