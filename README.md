@@ -220,7 +220,7 @@ results = controller.find_paths_with_constraints(
 
 ### Available Constraints
 
-#### 1. TimeConstraint ⭐ **NEW**
+#### 1. TimeConstraint
 - **Purpose**: Limits estimated travel time along paths
 - **Logic**: `time = distance / average_speed`
 - **Default Speed**: 8.3 m/s (30 km/h urban speed)
@@ -262,23 +262,56 @@ class TimeConstraint:
 - **Features**: Smart suggestions for invalid locations
 - **Logic**: Fuzzy matching with 2-3 character prefixes
 
+#### 5. SameLocationConstraint
+- **Purpose**: Handles case where initial and goal states are the same
+- **Logic**: Returns zero-distance path without running algorithms
+- **Display**: "Path found: 0 steps (same location)" with single point visualization
+- **Implementation**: Validates location, shows green marker with annotation
+
+#### 6. UnknownLocationConstraint  
+- **Purpose**: Handles invalid/unknown start or goal locations
+- **Features**: AI-powered location suggestions based on user input
+- **Logic**: Fuzzy matching with 2-3 character prefixes, word matching
+- **Display**: "Did you mean [suggestions]?" with 1-4 location options
+- **Priority**: Exact match → Prefix match → Word match → Fuzzy match
+
+#### 7. MultipleOptimalPathsConstraint
+- **Purpose**: Handles discovery of 2+ equal-cost optimal paths
+- **Logic**: Validates path diversity with 40% similarity threshold
+- **Features**: Weighted heuristics [0.5, 1.5, 2.0, 0.8] for alternatives
+- **Validation**: Each alternative must satisfy all constraints
+- **Display**: Shows primary path + alternative paths with different colors
+
 ### Constraint Application Logic
 
 ```python
 # All algorithms receive the same constraint set
 constraints = [
-    TimeConstraint(60.0, path_calculator, 8.3),    # 1-minute time limit
-    DistanceConstraint(10000, path_calculator),    # 10km distance limit  
-    NodeLimitConstraint(25),                        # 25 node limit
+    TimeConstraint(60.0, path_calculator, 8.3),        # 1-minute time limit
+    DistanceConstraint(10000, path_calculator),        # 10km distance limit  
+    NodeLimitConstraint(25),                            # 25 node limit
+    SameLocationConstraint(),                          # Handle same start/end
+    UnknownLocationConstraint(),                       # Handle invalid locations
+    MultipleOptimalPathsConstraint(),                  # Handle multiple paths
 ]
 
-# Applied during pathfinding
-if algorithm == "BFS":
-    result = bfs_controller.find_optimal_paths(start, end, "bfs", max_time=60.0)
-elif algorithm == "A*":
-    result = astar_controller.find_optimal_paths(start, end, "astar", max_time=60.0)
-elif algorithm == "DFS":
-    result = dfs_controller.find_paths_with_constraints(start, end, max_time=60.0)
+# Applied during pathfinding with special case handling
+if start == end:
+    result = handle_same_location(start, algorithm)    # SameLocationConstraint
+elif not validate_locations(start, end):
+    result = show_location_suggestions(start, end)    # UnknownLocationConstraint
+else:
+    # Normal pathfinding with all constraints
+    if algorithm == "BFS":
+        result = bfs_controller.find_optimal_paths(start, end, "bfs", max_time=60.0)
+    elif algorithm == "A*":
+        result = astar_controller.find_optimal_paths(start, end, "astar", max_time=60.0)
+    elif algorithm == "DFS":
+        result = dfs_controller.find_paths_with_constraints(start, end, max_time=60.0)
+    
+    # Handle multiple optimal paths
+    if len(result["paths"]) > 1:
+        result = apply_multiple_paths_constraint(result)  # MultipleOptimalPathsConstraint
 ```
 
 ## Heuristic Path Logic
